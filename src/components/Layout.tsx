@@ -142,11 +142,9 @@ export function PageShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <AnimatePresence mode="wait">
-        <motion.main key={location.pathname} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="flex-1 pb-24 md:pb-0">
-          {children}
-        </motion.main>
-      </AnimatePresence>
+      <motion.main key={location.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="flex-1 pb-24 md:pb-0">
+        {children}
+      </motion.main>
       <Footer />
       <WhatsAppFab />
       <StickyMobileBar />
