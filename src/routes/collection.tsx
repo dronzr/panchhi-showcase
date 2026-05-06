@@ -53,7 +53,7 @@ function Collection() {
                 return (
                   <li key={c}>
                     <button
-                      onClick={() => navigate({ search: (p) => ({ ...p, category: c === "All" ? undefined : c }) })}
+                      onClick={() => navigate({ search: (p: any) => ({ ...p, category: c === "All" ? undefined : c }) })}
                       className={`w-full rounded-md px-3 py-1.5 text-left transition-colors ${active ? "bg-primary text-primary-foreground" : "hover:bg-secondary"}`}>
                       {c}
                     </button>
@@ -67,7 +67,7 @@ function Collection() {
             <div className="mt-3 flex flex-wrap gap-2">
               {["XS","S","M","L","XL","XXL"].map(s => (
                 <button key={s}
-                  onClick={() => navigate({ search: (p) => ({ ...p, size: size === s ? undefined : s }) })}
+                  onClick={() => navigate({ search: (p: any) => ({ ...p, size: size === s ? undefined : s }) })}
                   className={`grid h-9 w-9 place-items-center rounded-full border text-xs ${size === s ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary"}`}>
                   {s}
                 </button>
@@ -78,7 +78,7 @@ function Collection() {
             <h3 className="font-serif text-lg">Sort By</h3>
             <select
               value={sort ?? "popular"}
-              onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value as never }) })}
+              onChange={(e) => navigate({ search: (p: any) => ({ ...p, sort: e.target.value as never }) })}
               className="mt-3 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
               <option value="popular">Popular</option>
               <option value="price-asc">Price: Low to High</option>
