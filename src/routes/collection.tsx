@@ -51,7 +51,7 @@ function Collection() {
     return list;
   }, [category, sort, size, q, min, max, fabric, color, rent]);
 
-  const upd = (patch: Record<string, unknown>) => navigate({ search: (p) => ({ ...p, ...patch }) as never });
+  const upd = (patch: Record<string, unknown>) => navigate({ search: ((p: Record<string, unknown>) => ({ ...p, ...patch })) as never });
   const clear = () => navigate({ search: {} as never });
   const activeCount = [category, size, fabric, color, q, min, max, rent].filter(Boolean).length;
 
