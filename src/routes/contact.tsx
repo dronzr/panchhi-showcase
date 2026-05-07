@@ -53,7 +53,7 @@ function Contact() {
               <div className="flex-1">
                 <div className="font-medium">Store Hours</div>
                 <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
-                  {hours.map(([d, t]) => (<><span key={d} className="font-medium text-foreground">{d}</span><span key={d+t}>{t}</span></>))}
+                  {hours.map(([d, t]) => (<div key={d} className="contents"><span className="font-medium text-foreground">{d}</span><span>{t}</span></div>))}
                 </div>
               </div>
             </div>
