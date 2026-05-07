@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "sonner";
 import { PageShell } from "@/components/Layout";
 import { useCart, inr } from "@/lib/cart";
 import { Minus, Plus, Trash2, Tag } from "lucide-react";
@@ -15,8 +17,10 @@ function CartPage() {
   const [applied, setApplied] = useState(0);
 
   const apply = () => {
-    if (coupon.toUpperCase() === "PANCHHI10") setApplied(Math.round(total * 0.1));
-    else setApplied(0);
+    if (coupon.toUpperCase() === "PANCHHI10") {
+      setApplied(Math.round(total * 0.1));
+      toast.success("Coupon applied — 10% off!");
+    } else { setApplied(0); toast.error("Invalid coupon"); }
   };
 
   const grand = Math.max(0, total - applied);
@@ -35,32 +39,37 @@ function CartPage() {
         ) : (
           <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_380px]">
             <div className="space-y-4">
-              {items.map(it => {
-                const price = it.mode === "rent" ? (it.product.rentPrice ?? 0) : it.product.price;
-                return (
-                  <div key={it.product.id + it.mode} className="flex gap-4 rounded-2xl border border-border bg-card p-4">
-                    <img src={it.product.image} alt="" className="h-32 w-24 rounded-lg object-cover" />
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{it.mode === "rent" ? "Rental · 3 days" : "Purchase"}</div>
-                          <div className="font-serif text-lg">{it.product.name}</div>
-                          <div className="text-xs text-muted-foreground">Size: {it.size}</div>
+              <AnimatePresence>
+                {items.map(it => {
+                  const price = it.mode === "rent" ? (it.product.rentPrice ?? 0) : it.product.price;
+                  return (
+                    <motion.div key={it.product.id + it.mode}
+                      layout
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -20 }}
+                      className="flex gap-4 rounded-2xl border border-border bg-card p-4">
+                      <img src={it.product.image} alt="" className="h-32 w-24 rounded-lg object-cover" />
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{it.mode === "rent" ? "Rental · 3 days" : "Purchase"}</div>
+                            <div className="font-serif text-lg">{it.product.name}</div>
+                            <div className="text-xs text-muted-foreground">Size: {it.size}</div>
+                          </div>
+                          <button onClick={() => { remove(it.product.id, it.mode); toast("Removed from bag"); }} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
                         </div>
-                        <button onClick={() => remove(it.product.id, it.mode)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
-                      </div>
-                      <div className="mt-3 flex items-center justify-between">
-                        <div className="inline-flex items-center rounded-full border border-border">
-                          <button onClick={() => setQty(it.product.id, it.mode, it.qty - 1)} className="grid h-8 w-8 place-items-center"><Minus className="h-3 w-3" /></button>
-                          <span className="w-8 text-center text-sm">{it.qty}</span>
-                          <button onClick={() => setQty(it.product.id, it.mode, it.qty + 1)} className="grid h-8 w-8 place-items-center"><Plus className="h-3 w-3" /></button>
+                        <div className="mt-3 flex items-center justify-between">
+                          <div className="inline-flex items-center rounded-full border border-border">
+                            <button onClick={() => setQty(it.product.id, it.mode, it.qty - 1)} className="grid h-8 w-8 place-items-center"><Minus className="h-3 w-3" /></button>
+                            <span className="w-8 text-center text-sm">{it.qty}</span>
+                            <button onClick={() => setQty(it.product.id, it.mode, it.qty + 1)} className="grid h-8 w-8 place-items-center"><Plus className="h-3 w-3" /></button>
+                          </div>
+                          <div className="font-serif text-lg text-primary">{inr(price * it.qty)}</div>
                         </div>
-                        <div className="font-serif text-lg text-primary">{inr(price * it.qty)}</div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
 
             <aside className="h-fit rounded-2xl border border-border bg-card p-6 lg:sticky lg:top-24">
@@ -80,7 +89,7 @@ function CartPage() {
               <div className="mt-5 flex justify-between border-t border-border pt-4 font-serif text-xl">
                 <span>Total</span><span className="text-primary">{inr(grand)}</span>
               </div>
-              <Link to="/checkout" className="mt-6 block rounded-full bg-primary py-3 text-center text-sm font-medium text-primary-foreground">Proceed to Checkout</Link>
+              <Link to="/checkout" className="mt-6 block rounded-full bg-primary py-3 text-center text-sm font-medium text-primary-foreground transition-transform hover:scale-[1.01]">Proceed to Checkout</Link>
             </aside>
           </div>
         )}

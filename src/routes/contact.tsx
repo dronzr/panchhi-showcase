@@ -1,15 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageShell } from "@/components/Layout";
-import { MapPin, Phone, Mail, Instagram, Facebook, MessageCircle, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Mail, Instagram, Facebook, MessageCircle, CheckCircle2, Clock } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [
     { title: "Contact — Panchhi" },
-    { name: "description", content: "Visit, call or message Panchhi By Abha Collection in Indore." },
+    { name: "description", content: "Visit, call or message Panchhi By Abha Collection in New Palasia, Indore." },
   ]}),
   component: Contact,
 });
+
+const hours = [
+  ["Mon", "12:00 PM – 8:30 PM"],
+  ["Tue", "12:00 PM – 8:30 PM"],
+  ["Wed", "12:00 PM – 8:30 PM"],
+  ["Thu", "12:00 PM – 8:30 PM"],
+  ["Fri", "12:00 PM – 8:30 PM"],
+  ["Sat", "12:00 PM – 8:30 PM"],
+  ["Sun", "2:00 PM – 8:30 PM"],
+];
 
 function Contact() {
   const [sent, setSent] = useState(false);
@@ -23,16 +34,31 @@ function Contact() {
 
           <div className="mt-8 space-y-5 text-sm">
             <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary/10 text-primary"><MapPin className="h-5 w-5" /></div>
-              <div><div className="font-medium">Address</div><div className="text-muted-foreground">Opposite To Zari Showroom, New Palasia, Indore - 452001</div></div>
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary"><MapPin className="h-5 w-5" /></div>
+              <div>
+                <div className="font-medium">Address</div>
+                <div className="text-muted-foreground">Magnet Tower, M101, Race Course Road, Opposite to Zari Showroom, New Palasia, Indore – 452001, Madhya Pradesh</div>
+              </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary/10 text-primary"><Phone className="h-5 w-5" /></div>
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary"><Phone className="h-5 w-5" /></div>
               <div><div className="font-medium">Call / WhatsApp</div><div className="text-muted-foreground">+91 12345 67890</div></div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-primary/10 text-primary"><Mail className="h-5 w-5" /></div>
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary"><Mail className="h-5 w-5" /></div>
               <div><div className="font-medium">Email</div><div className="text-muted-foreground">hello@panchhi.in</div></div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-primary"><Clock className="h-5 w-5" /></div>
+              <div className="flex-1">
+                <div className="font-medium">Store Hours</div>
+                <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs text-muted-foreground">
+                  {hours.map(([d, t]) => (<><span key={d} className="font-medium text-foreground">{d}</span><span key={d+t}>{t}</span></>))}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-lg border border-border bg-secondary/40 p-3 text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">GST Registered</span> · GSTIN: 23ABXFA8345E1Z7
             </div>
           </div>
 
@@ -44,12 +70,13 @@ function Contact() {
 
           <div className="mt-8 overflow-hidden rounded-2xl border border-border">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.6!2d75.88!3d22.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDQzJzEyLjAiTiA3NcKwNTInNDguMCJF!5e0!3m2!1sen!2sin!4v1700000000000"
+              title="Panchhi Boutique location"
+              src="https://www.google.com/maps?q=Magnet+Tower+New+Palasia+Indore&output=embed"
               width="100%" height="280" style={{ border: 0 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
           </div>
         </div>
 
-        <form onSubmit={(e) => { e.preventDefault(); setSent(true); }} className="h-fit rounded-2xl border border-border bg-card p-7 shadow-soft md:sticky md:top-24">
+        <form onSubmit={(e) => { e.preventDefault(); setSent(true); toast.success("Message sent!"); }} className="h-fit rounded-2xl border border-border bg-card p-7 shadow-soft md:sticky md:top-24">
           {sent ? (
             <div className="py-12 text-center">
               <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-600" />
