@@ -30,7 +30,7 @@ function Index() {
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 py-12 md:grid-cols-2 md:gap-16 md:px-8 md:py-20">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}>
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-[var(--maroon)]">
-              <Sparkles className="h-3.5 w-3.5" /> Crafted in Indore · Since 2019
+              <Sparkles className="h-3.5 w-3.5" /> Crafted in Indore · Since 2006
             </div>
             <h1 className="mt-5 font-serif text-5xl leading-[1.05] text-foreground md:text-7xl text-balance">
               Find your perfect outfit for <em className="text-primary not-italic">every occasion</em>
