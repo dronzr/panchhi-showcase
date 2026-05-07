@@ -17,10 +17,11 @@ function About() {
         <div>
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Our Story</div>
           <h1 className="mt-2 font-serif text-5xl md:text-6xl">About Panchhi By Abha Collection</h1>
-          <p className="mt-5 text-muted-foreground">Born in the heart of Indore, Panchhi is a love-letter to Indian craft. Founded by Abha, our boutique brings together heritage embroidery, modern silhouettes and a deeply personal client experience.</p>
-          <p className="mt-3 text-muted-foreground">We believe every occasion deserves an outfit that feels truly yours — whether you're walking down the aisle or stepping into a Saturday soirée.</p>
+          <p className="mt-5 text-muted-foreground">Originally started in <span className="font-medium text-foreground">2006 in Mhow</span>, Panchhi By Abha Collection has grown into one of Indore's most trusted boutiques for designer ethnic and contemporary wear. Today, our flagship store sits in the heart of New Palasia.</p>
+          <p className="mt-3 text-muted-foreground">From kurtis, suits and sarees to lehengas, gowns and indo-western styles — every piece is curated for fit, finish and feeling. We specialise in bridal outfits, party wear, garba costumes, pre-wedding gowns and western dresses, available for both <span className="font-medium text-foreground">purchase and rental</span>.</p>
+          <p className="mt-3 text-muted-foreground">It isn't just a boutique — it's a personal styling experience.</p>
           <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4">
-            {[["5+","Years"],["5000+","Clients"],["1000+","Outfits"],["4.8★","Reviews"]].map(([n,l]) => (
+            {[["18+","Years"],["5000+","Clients"],["1000+","Outfits"],["4.8★","Reviews"]].map(([n,l]) => (
               <div key={l}>
                 <div className="font-serif text-3xl text-primary">{n}</div>
                 <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{l}</div>

@@ -16,7 +16,7 @@ function Book() {
   const [done, setDone] = useState(false);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const slots = ["11:00 AM","12:30 PM","2:00 PM","3:30 PM","5:00 PM","6:30 PM"];
+  const slots = ["12:00 PM","1:30 PM","3:00 PM","4:30 PM","6:00 PM","7:30 PM"];
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -69,7 +69,7 @@ function Book() {
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[var(--maroon-deep)]/80 to-transparent p-6 text-primary-foreground">
               <div className="text-xs uppercase tracking-wider opacity-80">Visit Us</div>
               <div className="mt-1 font-serif text-2xl">Panchhi Boutique, Indore</div>
-              <div className="mt-1 text-sm opacity-80">Opp. Zari Showroom, New Palasia · 11AM – 8PM</div>
+              <div className="mt-1 text-sm opacity-80">Magnet Tower, M101, New Palasia · Mon–Sat 12–8:30PM, Sun 2–8:30PM</div>
             </div>
           </div>
         </div>

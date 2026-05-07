@@ -1,5 +1,7 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { PageShell } from "@/components/Layout";
 import { getProduct, products } from "@/lib/products";
 import { useCart, inr } from "@/lib/cart";
@@ -29,11 +31,19 @@ export const Route = createFileRoute("/product/$id")({
 
 function ProductPage() {
   const product = Route.useLoaderData();
-  const { add } = useCart();
+  const { add, wishlist, toggleWish } = useCart();
+  const wished = wishlist.includes(product.id);
   const [size, setSize] = useState(product.sizes[0]);
   const [tab, setTab] = useState<"desc"|"size"|"policy">("desc");
   const [zoom, setZoom] = useState(false);
+  const [pulse, setPulse] = useState(0);
   const related = products.filter(p => p.id !== product.id).slice(0, 4);
+
+  const handleAdd = (mode: "buy" | "rent") => {
+    add({ product, qty: 1, mode, size });
+    setPulse(p => p + 1);
+    toast.success(`${product.name} added to bag`, { description: `${mode === "rent" ? "Rental" : "Purchase"} · Size ${size}` });
+  };
 
   return (
     <PageShell>
@@ -45,6 +55,10 @@ function ProductPage() {
         <div>
           <div className="relative overflow-hidden rounded-2xl bg-secondary shadow-luxury" onClick={() => setZoom(z=>!z)}>
             <img src={product.image} alt={product.name} className={`aspect-[3/4] w-full object-cover transition-transform duration-500 ${zoom ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"}`} />
+            <button onClick={(e) => { e.stopPropagation(); toggleWish(product.id); toast.success(wished ? "Removed from wishlist" : "Added to wishlist 💖"); }}
+              className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-background/90 backdrop-blur shadow-soft hover:scale-110 transition-transform">
+              <Heart className={`h-5 w-5 ${wished ? "fill-primary text-primary" : ""}`} />
+            </button>
           </div>
           <div className="mt-3 grid grid-cols-4 gap-2">
             {[product.image, product.image, product.image, product.image].map((img, i) => (
@@ -66,8 +80,8 @@ function ProductPage() {
             <div className="text-sm font-medium">Size</div>
             <div className="mt-2 flex flex-wrap gap-2">
               {product.sizes.map((s: string) => (
-                <button key={s} onClick={() => setSize(s as string)}
-                  className={`min-w-12 rounded-full border px-4 py-2 text-sm ${size === s ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary"}`}>{s}</button>
+                <button key={s} onClick={() => setSize(s)}
+                  className={`min-w-12 rounded-full border px-4 py-2 text-sm transition ${size === s ? "border-primary bg-primary text-primary-foreground" : "border-border hover:border-primary"}`}>{s}</button>
               ))}
             </div>
           </div>
@@ -79,25 +93,25 @@ function ProductPage() {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <button onClick={() => add({ product, qty: 1, mode: "buy", size })}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-soft transition-transform hover:scale-[1.02]">
+          <motion.div key={pulse} animate={pulse > 0 ? { scale: [1, 1.02, 1] } : {}} transition={{ duration: 0.3 }} className="mt-8 grid gap-3 sm:grid-cols-2">
+            <button onClick={() => handleAdd("buy")}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-soft transition-transform hover:scale-[1.02] active:scale-95">
               <ShoppingBag className="h-4 w-4" /> Add to Cart
             </button>
             {product.rentable && (
-              <button onClick={() => add({ product, qty: 1, mode: "rent", size })}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary bg-background px-6 py-3.5 text-sm font-medium text-primary transition-transform hover:scale-[1.02]">
+              <button onClick={() => handleAdd("rent")}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary bg-background px-6 py-3.5 text-sm font-medium text-primary transition-transform hover:scale-[1.02] active:scale-95">
                 <Sparkles className="h-4 w-4" /> Rent This Outfit
               </button>
             )}
             <Link to="/book" className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--maroon-deep)] px-6 py-3.5 text-sm font-medium text-primary-foreground">
               <Calendar className="h-4 w-4" /> Book Trial
             </Link>
-            <a href={`https://wa.me/911234567890?text=Hi! I'm interested in ${product.name}`} target="_blank" rel="noreferrer"
+            <a href={`https://wa.me/911234567890?text=Hi! I'm interested in ${encodeURIComponent(product.name)}`} target="_blank" rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-6 py-3.5 text-sm font-medium">
               <MessageCircle className="h-4 w-4" /> WhatsApp Enquiry
             </a>
-          </div>
+          </motion.div>
 
           <div className="mt-8 grid grid-cols-2 gap-4 rounded-2xl bg-secondary/40 p-5 text-sm">
             <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-primary" /> Premium Quality</div>
@@ -108,9 +122,9 @@ function ProductPage() {
 
           <div className="mt-8 border-t border-border pt-6">
             <div className="flex gap-6 border-b border-border text-sm">
-              {[["desc","Description"],["size","Size Guide"],["policy","Delivery & Policy"]].map(([k,l]) => (
-                <button key={k} onClick={() => setTab(k as never)}
-                  className={`pb-3 transition-colors ${tab === k ? "border-b-2 border-primary text-primary" : "text-muted-foreground"}`}>{l}</button>
+              {(["desc","size","policy"] as const).map((k) => (
+                <button key={k} onClick={() => setTab(k)}
+                  className={`pb-3 transition-colors ${tab === k ? "border-b-2 border-primary text-primary" : "text-muted-foreground"}`}>{k === "desc" ? "Description" : k === "size" ? "Size Guide" : "Delivery & Policy"}</button>
               ))}
             </div>
             <div className="py-5 text-sm text-muted-foreground">

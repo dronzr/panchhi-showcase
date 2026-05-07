@@ -1,6 +1,8 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { CartProvider } from "@/lib/cart";
+import { AuthProvider } from "@/lib/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -21,7 +23,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Panchhi By Abha Collection — Premium Designer Outfits in Indore" },
-      { name: "description", content: "Buy, rent or book a trial for designer lehengas, gowns, sarees & more at Panchhi By Abha Collection, Indore." },
+      { name: "description", content: "Buy, rent or book a trial for designer lehengas, gowns, sarees & more at Panchhi By Abha Collection, New Palasia, Indore." },
       { property: "og:title", content: "Panchhi By Abha Collection" },
       { property: "og:description", content: "Find your perfect outfit for every occasion — buy, rent or book a trial." },
     ],
@@ -34,9 +36,12 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootShell,
   component: () => (
-    <CartProvider>
-      <Outlet />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <Outlet />
+        <Toaster position="top-center" richColors />
+      </CartProvider>
+    </AuthProvider>
   ),
   notFoundComponent: NotFoundComponent,
 });

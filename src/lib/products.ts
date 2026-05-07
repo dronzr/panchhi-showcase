@@ -34,6 +34,18 @@ export const categories = [
   "Plus Size",
 ];
 
+export const fabrics = ["Velvet", "Satin Silk", "Georgette", "Net & Crepe", "Banarasi Silk", "Wool Crepe", "Cotton Silk"];
+export const colorOptions = [
+  { name: "Maroon", hex: "#5b1a1a" },
+  { name: "Green", hex: "#0e6b48" },
+  { name: "Pink", hex: "#e7b6b6" },
+  { name: "Black", hex: "#111111" },
+  { name: "Gold", hex: "#caa35a" },
+  { name: "Cream", hex: "#efe6cf" },
+  { name: "Navy", hex: "#1a2540" },
+  { name: "Wine", hex: "#5e1a2b" },
+];
+
 export const products: Product[] = [
   { id: "royal-maroon-lehenga", name: "Royal Maroon Lehenga", price: 24000, rentPrice: 4500, category: "Bridal", color: "Maroon", colorHex: "#5b1a1a", sizes: ["S","M","L","XL","XXL"], image: bridal, rentable: true, description: "Heavy embroidered maroon bridal lehenga with intricate zardosi work, paired with embroidered dupatta.", fabric: "Velvet", work: "Zardosi, Dabka, Sequins" },
   { id: "emerald-party-gown", name: "Emerald Party Gown", price: 14500, rentPrice: 3000, category: "Party Wear", color: "Green", colorHex: "#0e6b48", sizes: ["S","M","L","XL"], image: party, rentable: true, description: "Floor-sweeping emerald gown with golden hem embroidery — made for unforgettable evenings.", fabric: "Satin Silk", work: "Hand Embroidery" },
