@@ -58,3 +58,91 @@ export const products: Product[] = [
 ];
 
 export const getProduct = (id: string) => products.find(p => p.id === id);
+
+// ---------- Search (fuzzy + synonyms) ----------
+const SYNONYMS: Record<string, string[]> = {
+  red: ["maroon", "wine"],
+  burgundy: ["wine", "maroon"],
+  emerald: ["green"],
+  beige: ["cream"],
+  ivory: ["cream"],
+  blue: ["navy"],
+  women: [], womens: [], woman: [], ladies: [], girls: [], female: [],
+  dress: ["gown", "lehenga", "anarkali", "saree", "kurta", "suit"],
+  dresses: ["gown", "lehenga", "anarkali", "saree", "kurta", "suit"],
+  outfit: ["gown", "lehenga", "saree"],
+  ethnic: ["lehenga", "saree", "anarkali", "indo-western", "kurta", "bridal"],
+  formal: ["office", "suit"],
+  wedding: ["bridal", "lehenga"],
+  bride: ["bridal"],
+  bridal: ["bridal", "lehenga"],
+  cocktail: ["party", "gown"],
+  evening: ["party", "gown"],
+  traditional: ["saree", "lehenga", "anarkali"],
+};
+
+export function searchProducts(query: string, list: Product[] = products): Product[] {
+  const q = query.toLowerCase().trim();
+  if (!q) return list;
+  const raw = q.split(/\s+/).filter(Boolean);
+  const tokens = new Set<string>();
+  raw.forEach(t => {
+    tokens.add(t);
+    (SYNONYMS[t] ?? []).forEach(s => tokens.add(s));
+    if (t.length > 3 && t.endsWith("s")) tokens.add(t.slice(0, -1));
+  });
+  const scored = list.map(p => {
+    const hay = `${p.name} ${p.category} ${p.color} ${p.fabric} ${p.work} ${p.description}`.toLowerCase();
+    let score = 0;
+    if (hay.includes(q)) score += 10;
+    tokens.forEach(t => { if (t.length > 1 && hay.includes(t)) score += 2; });
+    return { p, score };
+  }).filter(x => x.score > 0).sort((a, b) => b.score - a.score);
+  return scored.map(x => x.p);
+}
+
+// ---------- Rental availability (deterministic mock bookings) ----------
+export type Booking = { size: string; from: string; to: string };
+
+function seedHash(s: string): number {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h;
+}
+function isoDay(d: Date) { return d.toISOString().slice(0, 10); }
+
+export function getBookings(p: Product): Booking[] {
+  if (!p.rentable) return [];
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const out: Booking[] = [];
+  for (const size of p.sizes) {
+    let h = seedHash(p.id + ":" + size);
+    for (let i = 0; i < 3; i++) {
+      const start = (h % 28) + i * 14 + 1;
+      const dur = ((h >> 7) % 3) + 2;
+      const f = new Date(today); f.setDate(f.getDate() + start);
+      const t = new Date(f); t.setDate(t.getDate() + dur);
+      out.push({ size, from: isoDay(f), to: isoDay(t) });
+      h = (Math.imul(h, 1103515245) + 12345) >>> 0;
+    }
+  }
+  return out;
+}
+export function isDateBooked(p: Product, size: string, dateIso: string): boolean {
+  return getBookings(p).some(b => b.size === size && dateIso >= b.from && dateIso < b.to);
+}
+export function nextAvailableDate(p: Product, size: string): string {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today); d.setDate(d.getDate() + i);
+    const iso = isoDay(d);
+    if (!isDateBooked(p, size, iso)) return iso;
+  }
+  return isoDay(today);
+}
+export function isAvailableToday(p: Product, size?: string): boolean {
+  if (!p.rentable) return false;
+  const today = isoDay(new Date());
+  const sizes = size ? [size] : p.sizes;
+  return sizes.some(s => !isDateBooked(p, s, today));
+}
