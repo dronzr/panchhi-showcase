@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Star, Truck, ShieldCheck, Calendar } from "lucide-react";
-import { PageShell } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { products, categories } from "@/lib/products";
 import hero from "@/assets/hero-bride.jpg";
@@ -21,7 +20,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    
+    <>
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10">
@@ -187,6 +186,6 @@ function Index() {
           Book Your Trial Appointment
         </Link>
       </section>
-    
+    </>
   );
 }
