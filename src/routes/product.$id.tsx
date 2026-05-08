@@ -107,15 +107,41 @@ function ProductPage() {
             </div>
           </div>
 
+          {product.rentable && (
+            <div className="mt-6 rounded-2xl border border-border bg-secondary/30 p-4">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-primary" /> Rental Availability · Size {size}
+                </div>
+                <span className={`text-[11px] font-medium rounded-full px-2 py-0.5 ${sizeAvailable ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-800"}`}>
+                  {sizeAvailable ? "Available today" : `Earliest ${new Date(earliest!).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`}
+                </span>
+              </div>
+              <div className="mt-3 grid grid-cols-7 gap-1.5">
+                {days.map(({ iso, d, booked }, i) => (
+                  <div key={iso} title={booked ? "Booked" : "Available"}
+                    className={`flex flex-col items-center rounded-md py-1.5 text-[10px] ${booked ? "bg-destructive/15 text-destructive line-through" : "bg-background hover:bg-emerald-50"} ${i === 0 ? "ring-1 ring-primary/40" : ""}`}>
+                    <span className="opacity-60">{d.toLocaleDateString("en-IN", { weekday: "short" }).slice(0,2)}</span>
+                    <span className="font-semibold">{d.getDate()}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 flex items-center gap-3 text-[10px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Available</span>
+                <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-destructive/70" /> Booked</span>
+              </div>
+            </div>
+          )}
+
           <motion.div key={pulse} animate={pulse > 0 ? { scale: [1, 1.02, 1] } : {}} transition={{ duration: 0.3 }} className="mt-8 grid gap-3 sm:grid-cols-2">
             <button onClick={() => handleAdd("buy")}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-soft transition-transform hover:scale-[1.02] active:scale-95">
               <ShoppingBag className="h-4 w-4" /> Add to Cart
             </button>
             {product.rentable && (
-              <button onClick={() => handleAdd("rent")}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-primary bg-background px-6 py-3.5 text-sm font-medium text-primary transition-transform hover:scale-[1.02] active:scale-95">
-                <Sparkles className="h-4 w-4" /> Rent This Outfit
+              <button onClick={() => handleAdd("rent")} disabled={!sizeAvailable}
+                className={`inline-flex items-center justify-center gap-2 rounded-full border px-6 py-3.5 text-sm font-medium transition-transform active:scale-95 ${sizeAvailable ? "border-primary bg-background text-primary hover:scale-[1.02]" : "border-border bg-muted text-muted-foreground cursor-not-allowed"}`}>
+                {sizeAvailable ? <><Sparkles className="h-4 w-4" /> Rent This Outfit</> : <><CalendarX className="h-4 w-4" /> Booked — try another size</>}
               </button>
             )}
             <Link to="/book" className="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--maroon-deep)] px-6 py-3.5 text-sm font-medium text-primary-foreground">
