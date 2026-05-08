@@ -12,7 +12,7 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <PageShell>
+    
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:px-8">
         <div>
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Our Story</div>
@@ -50,6 +50,6 @@ function About() {
           <Link to="/book" className="mt-10 inline-flex rounded-full bg-primary px-8 py-4 text-sm font-medium text-primary-foreground shadow-luxury">Book A Visit</Link>
         </div>
       </section>
-    </PageShell>
+    
   );
 }

@@ -14,7 +14,7 @@ function Wishlist() {
   const { wishlist } = useCart();
   const items = products.filter(p => wishlist.includes(p.id));
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
         <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Saved For Later</div>
         <h1 className="mt-2 font-serif text-4xl md:text-5xl">My Wishlist</h1>
@@ -32,6 +32,6 @@ function Wishlist() {
           </div>
         )}
       </div>
-    </PageShell>
+    
   );
 }

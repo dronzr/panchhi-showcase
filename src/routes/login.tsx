@@ -23,7 +23,7 @@ function Login() {
   };
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-md px-6 py-16 md:py-24">
         <div className="text-center">
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Welcome Back</div>
@@ -36,7 +36,7 @@ function Login() {
           <p className="text-center text-xs text-muted-foreground">New here? <Link to="/signup" className="text-primary">Create an account</Link></p>
         </form>
       </div>
-    </PageShell>
+    
   );
 }
 

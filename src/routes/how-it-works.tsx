@@ -20,7 +20,7 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <PageShell>
+    
       <section className="bg-secondary/30">
         <div className="mx-auto max-w-7xl px-6 py-16 text-center md:px-8">
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Our Process</div>
@@ -44,6 +44,6 @@ function HowItWorks() {
           <Link to="/book" className="inline-flex rounded-full bg-primary px-8 py-4 text-sm font-medium text-primary-foreground shadow-luxury transition-transform hover:scale-105">Start Now — Book Trial</Link>
         </div>
       </section>
-    </PageShell>
+    
   );
 }

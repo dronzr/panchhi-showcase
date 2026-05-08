@@ -26,7 +26,7 @@ function CartPage() {
   const grand = Math.max(0, total - applied);
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
         <h1 className="font-serif text-4xl md:text-5xl">Your Bag</h1>
 
@@ -94,6 +94,6 @@ function CartPage() {
           </div>
         )}
       </div>
-    </PageShell>
+    
   );
 }

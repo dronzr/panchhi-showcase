@@ -20,11 +20,11 @@ export const Route = createFileRoute("/product/$id")({
     { property: "og:image", content: loaderData?.image ?? "" },
   ]}),
   notFoundComponent: () => (
-    <PageShell><div className="py-32 text-center"><h1 className="font-serif text-4xl">Outfit not found</h1><Link to="/collection" className="mt-4 inline-block text-primary">Back to collection</Link></div></PageShell>
+    <div className="py-32 text-center"><h1 className="font-serif text-4xl">Outfit not found</h1><Link to="/collection" className="mt-4 inline-block text-primary">Back to collection</Link></div>
   ),
   errorComponent: ({ error, reset }) => {
     const router = useRouter();
-    return <PageShell><div className="py-32 text-center"><p>{error.message}</p><button onClick={() => { router.invalidate(); reset(); }} className="mt-4 rounded-full bg-primary px-5 py-2 text-primary-foreground">Retry</button></div></PageShell>;
+    return <div className="py-32 text-center"><p>{error.message}</p><button onClick={() => { router.invalidate(); reset(); }} className="mt-4 rounded-full bg-primary px-5 py-2 text-primary-foreground">Retry</button></div>;
   },
   component: ProductPage,
 });
@@ -60,7 +60,7 @@ function ProductPage() {
   };
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-muted-foreground md:px-8">
         <Link to="/">Home</Link> <ChevronRight className="inline h-3 w-3" /> <Link to="/collection">Collection</Link> <ChevronRight className="inline h-3 w-3" /> <span className="text-foreground">{product.name}</span>
       </div>
@@ -189,6 +189,6 @@ function ProductPage() {
           {related.map((p,i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
       </section>
-    </PageShell>
+    
   );
 }

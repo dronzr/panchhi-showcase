@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <PageShell>
+    
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10">
@@ -187,6 +187,6 @@ function Index() {
           Book Your Trial Appointment
         </Link>
       </section>
-    </PageShell>
+    
   );
 }
