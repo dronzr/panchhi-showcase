@@ -3,7 +3,7 @@ import { ShoppingBag, Heart, Menu, X, Phone, MapPin, Mail, Instagram, Facebook, 
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
-import { products } from "@/lib/products";
+import { searchProducts } from "@/lib/products";
 import logo from "@/assets/logo-bird.png";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -20,12 +20,7 @@ function SearchBox({ onClose }: { onClose?: () => void }) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => { inputRef.current?.focus(); }, []);
-  const results = q.trim().length > 0 ? products.filter(p =>
-    p.name.toLowerCase().includes(q.toLowerCase()) ||
-    p.category.toLowerCase().includes(q.toLowerCase()) ||
-    p.color.toLowerCase().includes(q.toLowerCase()) ||
-    p.fabric.toLowerCase().includes(q.toLowerCase())
-  ).slice(0, 6) : [];
+  const results = q.trim().length > 0 ? searchProducts(q).slice(0, 6) : [];
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();

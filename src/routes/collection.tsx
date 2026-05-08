@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { PageShell } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories, fabrics, colorOptions } from "@/lib/products";
+import { products, categories, fabrics, colorOptions, searchProducts } from "@/lib/products";
 import { useMemo, useState } from "react";
 import { Filter, X } from "lucide-react";
 
@@ -34,11 +34,7 @@ function Collection() {
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const filtered = useMemo(() => {
-    let list = [...products];
-    if (q) {
-      const t = q.toLowerCase();
-      list = list.filter(p => p.name.toLowerCase().includes(t) || p.category.toLowerCase().includes(t) || p.color.toLowerCase().includes(t) || p.fabric.toLowerCase().includes(t));
-    }
+    let list = q ? searchProducts(q) : [...products];
     if (category && category !== "All") list = list.filter(p => p.category === category);
     if (size) list = list.filter(p => p.sizes.includes(size));
     if (fabric) list = list.filter(p => p.fabric === fabric);
