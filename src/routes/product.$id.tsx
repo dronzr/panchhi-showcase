@@ -3,9 +3,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { PageShell } from "@/components/Layout";
-import { getProduct, products } from "@/lib/products";
+import { getProduct, products, isDateBooked, nextAvailableDate, isAvailableToday } from "@/lib/products";
 import { useCart, inr } from "@/lib/cart";
-import { Heart, ShoppingBag, Calendar, MessageCircle, ShieldCheck, Truck, Sparkles, ChevronRight } from "lucide-react";
+import { Heart, ShoppingBag, Calendar, MessageCircle, ShieldCheck, Truck, Sparkles, ChevronRight, CalendarX } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 
 export const Route = createFileRoute("/product/$id")({
@@ -39,7 +39,21 @@ function ProductPage() {
   const [pulse, setPulse] = useState(0);
   const related = products.filter(p => p.id !== product.id).slice(0, 4);
 
+  const sizeAvailable = product.rentable ? isAvailableToday(product, size) : true;
+  const earliest = product.rentable ? nextAvailableDate(product, size) : null;
+
+  // 14-day availability strip for selected size
+  const days = Array.from({ length: 14 }, (_, i) => {
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + i);
+    const iso = d.toISOString().slice(0, 10);
+    return { iso, d, booked: product.rentable ? isDateBooked(product, size, iso) : false };
+  });
+
   const handleAdd = (mode: "buy" | "rent") => {
+    if (mode === "rent" && !sizeAvailable) {
+      toast.error("This size is booked today", { description: `Earliest available: ${new Date(earliest!).toLocaleDateString("en-IN", { day: "numeric", month: "long" })}` });
+      return;
+    }
     add({ product, qty: 1, mode, size });
     setPulse(p => p + 1);
     toast.success(`${product.name} added to bag`, { description: `${mode === "rent" ? "Rental" : "Purchase"} · Size ${size}` });
