@@ -20,7 +20,7 @@ function Book() {
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <PageShell>
+    
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-2 md:px-8">
         <div>
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Personal Styling</div>
@@ -74,7 +74,7 @@ function Book() {
           </div>
         </div>
       </div>
-    </PageShell>
+    
   );
 }
 

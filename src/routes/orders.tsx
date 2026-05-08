@@ -12,7 +12,7 @@ export const Route = createFileRoute("/orders")({
 function Orders() {
   const { orders, user } = useAuth();
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-4xl px-6 py-12 md:px-8">
         <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">{user?.name ?? "Guest"}</div>
         <h1 className="mt-2 font-serif text-4xl md:text-5xl">My Orders</h1>
@@ -56,6 +56,6 @@ function Orders() {
           </div>
         )}
       </div>
-    </PageShell>
+    
   );
 }

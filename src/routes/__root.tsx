@@ -3,6 +3,7 @@ import appCss from "../styles.css?url";
 import { CartProvider } from "@/lib/cart";
 import { AuthProvider } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
+import { AppFrame } from "@/components/Layout";
 
 function NotFoundComponent() {
   return (
@@ -40,7 +41,9 @@ export const Route = createRootRoute({
   component: () => (
     <AuthProvider>
       <CartProvider>
-        <Outlet />
+        <AppFrame>
+          <Outlet />
+        </AppFrame>
         <Toaster position="top-center" richColors />
       </CartProvider>
     </AuthProvider>

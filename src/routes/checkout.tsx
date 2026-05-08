@@ -47,7 +47,7 @@ function Checkout() {
 
   if (done) {
     return (
-      <PageShell>
+      
         <div className="mx-auto max-w-xl px-6 py-24 text-center">
           <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200, damping: 15 }}>
             <CheckCircle2 className="mx-auto h-20 w-20 text-emerald-600" />
@@ -60,23 +60,23 @@ function Checkout() {
             <button onClick={() => nav({ to: "/" })} className="rounded-full border border-border px-6 py-3 text-sm">Back Home</button>
           </div>
         </div>
-      </PageShell>
+      
     );
   }
 
   if (items.length === 0) {
     return (
-      <PageShell>
+      
         <div className="mx-auto max-w-md px-6 py-24 text-center">
           <h1 className="font-serif text-3xl">Your bag is empty</h1>
           <Link to="/collection" className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm text-primary-foreground">Browse Collection</Link>
         </div>
-      </PageShell>
+      
     );
   }
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
         <h1 className="font-serif text-4xl md:text-5xl">Checkout</h1>
         <form onSubmit={place} className="mt-8 grid gap-8 lg:grid-cols-[1fr_380px]">
@@ -128,7 +128,7 @@ function Checkout() {
           </aside>
         </form>
       </div>
-    </PageShell>
+    
   );
 }
 

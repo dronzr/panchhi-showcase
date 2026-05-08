@@ -13,17 +13,17 @@ function Account() {
 
   if (!user) {
     return (
-      <PageShell>
+      
         <div className="mx-auto max-w-md px-6 py-24 text-center">
           <h1 className="font-serif text-3xl">Please sign in</h1>
           <Link to="/login" className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-sm text-primary-foreground">Login</Link>
         </div>
-      </PageShell>
+      
     );
   }
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-5xl px-6 py-12 md:px-8">
         <div className="flex items-center justify-between">
           <div>
@@ -52,6 +52,6 @@ function Account() {
           </Link>
         </div>
       </div>
-    </PageShell>
+    
   );
 }

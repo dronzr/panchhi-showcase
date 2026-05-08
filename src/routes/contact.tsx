@@ -25,7 +25,7 @@ const hours = [
 function Contact() {
   const [sent, setSent] = useState(false);
   return (
-    <PageShell>
+    
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-2 md:px-8">
         <div>
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Get In Touch</div>
@@ -97,7 +97,7 @@ function Contact() {
           )}
         </form>
       </section>
-    </PageShell>
+    
   );
 }
 

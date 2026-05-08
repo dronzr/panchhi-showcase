@@ -1,4 +1,4 @@
-import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ShoppingBag, Heart, Menu, X, Phone, MapPin, Mail, Instagram, Facebook, Search, User as UserIcon, LogOut, Package } from "lucide-react";
 import { useState, useEffect, useRef, type ReactNode } from "react";
 import { useCart } from "@/lib/cart";
@@ -245,17 +245,20 @@ export function StickyMobileBar() {
   );
 }
 
-export function PageShell({ children }: { children: ReactNode }) {
-  const { location } = useRouterState();
+export function AppFrame({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <motion.main key={location.pathname} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.18, ease: "easeOut" }} className="flex-1 pb-24 md:pb-0">
+      <main className="flex-1 pb-24 md:pb-0">
         {children}
-      </motion.main>
+      </main>
       <Footer />
       <WhatsAppFab />
       <StickyMobileBar />
     </div>
   );
+}
+
+export function PageShell({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 }

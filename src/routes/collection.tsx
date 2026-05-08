@@ -139,7 +139,7 @@ function Collection() {
   );
 
   return (
-    <PageShell>
+    <>
       <div className="border-b border-border bg-secondary/30">
         <div className="mx-auto max-w-7xl px-6 py-12 md:px-8">
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Our Collection</div>
@@ -178,6 +178,6 @@ function Collection() {
           </div>
         </div>
       )}
-    </PageShell>
+    </>
   );
 }

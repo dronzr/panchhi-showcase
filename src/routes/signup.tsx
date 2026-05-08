@@ -24,7 +24,7 @@ function Signup() {
   };
 
   return (
-    <PageShell>
+    
       <div className="mx-auto max-w-md px-6 py-16 md:py-24">
         <div className="text-center">
           <div className="text-xs uppercase tracking-[0.3em] text-[var(--gold)]">Join Panchhi</div>
@@ -38,7 +38,7 @@ function Signup() {
           <p className="text-center text-xs text-muted-foreground">Already a member? <Link to="/login" className="text-primary">Sign in</Link></p>
         </form>
       </div>
-    </PageShell>
+    
   );
 }
 
