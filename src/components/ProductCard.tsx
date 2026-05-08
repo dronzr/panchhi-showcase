@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { Product } from "@/lib/products";
+import { isAvailableToday, nextAvailableDate } from "@/lib/products";
 import { useCart, inr } from "@/lib/cart";
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
@@ -29,9 +30,19 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       <Link to="/product/$id" params={{ id: product.id }} className="block">
         <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
           <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-          {product.rentable && (
-            <span className="absolute left-3 top-3 rounded-full bg-[var(--gold)] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--maroon-deep)]">Rent · Buy</span>
-          )}
+          {product.rentable && (() => {
+            const avail = isAvailableToday(product);
+            const next = avail ? null : nextAvailableDate(product, product.sizes[0]);
+            return (
+              <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+                <span className="rounded-full bg-[var(--gold)] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--maroon-deep)]">Rent · Buy</span>
+                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium backdrop-blur ${avail ? "bg-emerald-500/90 text-white" : "bg-amber-500/90 text-white"}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${avail ? "bg-white animate-pulse" : "bg-white/80"}`} />
+                  {avail ? "Available now" : `Next: ${new Date(next!).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`}
+                </span>
+              </div>
+            );
+          })()}
           <button
             onClick={onWish}
             aria-label="Wishlist"
