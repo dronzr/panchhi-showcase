@@ -189,6 +189,6 @@ function ProductPage() {
           {related.map((p,i) => <ProductCard key={p.id} product={p} index={i} />)}
         </div>
       </section>
-    
+    </>
   );
 }
