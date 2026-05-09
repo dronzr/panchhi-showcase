@@ -60,7 +60,7 @@ function ProductPage() {
   };
 
   return (
-    
+    <>
       <div className="mx-auto max-w-7xl px-6 py-6 text-sm text-muted-foreground md:px-8">
         <Link to="/">Home</Link> <ChevronRight className="inline h-3 w-3" /> <Link to="/collection">Collection</Link> <ChevronRight className="inline h-3 w-3" /> <span className="text-foreground">{product.name}</span>
       </div>
