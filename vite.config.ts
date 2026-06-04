@@ -1,13 +1,21 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// SPA mode: build static HTML shell so it can be deployed to Netlify (or any
-// static host). No Cloudflare Worker / SSR runtime required at runtime.
-export default defineConfig({
-  cloudflare: false,
-  tanstackStart: {
-    spa: {
-      enabled: true,
-      prerender: { enabled: true, outputPath: "/index.html" },
-    },
-  },
-});
+const isNetlifyBuild = process.env.NETLIFY === "true" || process.env.NETLIFY === "1";
+
+export default defineConfig(
+  isNetlifyBuild
+    ? {
+        // Netlify serves this as a static SPA.
+        nitro: false,
+        tanstackStart: {
+          spa: {
+            enabled: true,
+            prerender: { enabled: true, outputPath: "/index.html" },
+          },
+        },
+      }
+    : {
+        // Lovable Publish needs the normal server runtime.
+        nitro: true,
+      },
+);
